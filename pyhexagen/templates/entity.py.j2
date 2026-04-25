@@ -1,0 +1,15 @@
+from dataclasses import dataclass, field
+from datetime import datetime
+from typing import Optional
+
+@dataclass
+class {{ resource_name }}:
+    """
+    Domain Entity: Pure Vanilla Python. 
+    Zero dependencies on external frameworks like Pydantic or SQLAlchemy.
+    """
+    id: Optional[int] = None
+    {% for attr in attributes %}
+    {{ attr.name }}: {{ attr.type }} = {%- if attr.type == 'str' %} "" {% elif attr.type == 'int' %} 0 {% else %} None {% endif %}
+    {% endfor %}
+    created_at: datetime = field(default_factory=datetime.now)

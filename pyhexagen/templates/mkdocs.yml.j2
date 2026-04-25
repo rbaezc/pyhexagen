@@ -1,0 +1,25 @@
+site_name: {{ project_name }}
+theme:
+  name: material
+  palette:
+    scheme: slate
+    primary: indigo
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          setup_commands:
+            - import sys
+            - sys.path.append("src")
+
+nav:
+  - Home: index.md
+  - Architecture:
+      - Domain Layer: domain.md
+      - Application Layer: application.md
+      - Infrastructure Layer: infrastructure.md
+  - API Reference:
+      - Routers: reference/routers.md
+      - Use Cases: reference/use_cases.md

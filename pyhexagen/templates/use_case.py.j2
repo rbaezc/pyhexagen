@@ -1,0 +1,16 @@
+from src.domain.models.{{ resource_name | lower }} import {{ resource_name }}
+from src.application.ports.{{ resource_name | lower }}_repository import {{ resource_name }}Repository
+
+class Create{{ resource_name }}UseCase:
+    """
+    Application Use Case: Orchestrates the business logic.
+    Depends on Ports, not on Infrastructure.
+    """
+    
+    def __init__(self, repo: {{ resource_name }}Repository):
+        self.repo = repo
+
+    async def execute(self, data: dict) -> {{ resource_name }}:
+        # In a real app, convert DTO to Entity
+        entity = {{ resource_name }}(**data)
+        return await self.repo.save(entity)

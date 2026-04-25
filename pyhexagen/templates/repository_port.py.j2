@@ -1,0 +1,21 @@
+from abc import ABC, abstractmethod
+from typing import List, Optional
+from src.domain.models.{{ resource_name | lower }} import {{ resource_name }}
+
+class {{ resource_name }}Repository(ABC):
+    """
+    Port: Formal contract for persistence.
+    Following Hexagonal Architecture, this is defined in the Application layer.
+    """
+    
+    @abstractmethod
+    async def save(self, {{ resource_name | lower }}: {{ resource_name }}) -> {{ resource_name }}:
+        pass
+
+    @abstractmethod
+    async def find_by_id(self, id: int) -> Optional[{{ resource_name }}]:
+        pass
+
+    @abstractmethod
+    async def list_all(self) -> List[{{ resource_name }}]:
+        pass

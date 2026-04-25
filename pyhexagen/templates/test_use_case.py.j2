@@ -1,0 +1,20 @@
+from unittest.mock import AsyncMock
+import pytest
+from src.application.use_cases.create_{{ resource_name | lower }} import Create{{ resource_name }}UseCase
+from src.application.ports.{{ resource_name | lower }}_repository import {{ resource_name }}Repository
+
+@pytest.mark.asyncio
+async def test_create_{{ resource_name | lower }}_success():
+    # Arrange: Mock the Port
+    mock_repo = AsyncMock(spec={{ resource_name }}Repository)
+    use_case = Create{{ resource_name }}UseCase(repo=mock_repo)
+    
+    test_data = {"id": 1} # Add fields as needed
+    mock_repo.save.return_value = AsyncMock() # Or a real Domain Entity instance
+
+    # Act
+    result = await use_case.execute(test_data)
+
+    # Assert
+    assert result is not None
+    mock_repo.save.assert_called_once()

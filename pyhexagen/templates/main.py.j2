@@ -1,0 +1,19 @@
+from fastapi import FastAPI
+from src.config import settings
+from src.infrastructure.logging import setup_logging
+from src.infrastructure.exception_handler import add_exception_handlers
+from src.api.routers import health
+
+# Setup structured logging
+setup_logging(env="production")
+
+app = FastAPI(title="{{ project_name }}")
+
+# Add global domain exception mapping
+add_exception_handlers(app)
+
+app.include_router(health.router)
+
+@app.get("/")
+async def root():
+    return {"message": "Welcome to {{ project_name }} (Hexagonal Architecture)"}

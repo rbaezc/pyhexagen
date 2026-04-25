@@ -1,0 +1,15 @@
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
+from sqlalchemy import Float, Integer, String, DateTime
+from datetime import datetime
+
+class Base(DeclarativeBase):
+    pass
+
+class {{ resource_name }}Table(Base):
+    __tablename__ = "{{ resource_name | lower }}s"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    {% for attr in attributes %}
+    {{ attr.name }}: Mapped[{{ attr.type }}] = mapped_column({%- if attr.type == 'str' %} String(255) {% elif attr.type == 'int' %} Integer {% elif attr.type == 'float' %} Float {% else %} String(255) {% endif %})
+    {% endfor %}
+    created_at: Mapped[datetime] = mapped_column(default=datetime.now)

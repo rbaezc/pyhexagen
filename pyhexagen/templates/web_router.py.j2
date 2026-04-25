@@ -1,0 +1,41 @@
+from fastapi import APIRouter, Depends, HTTPException, status
+from pydantic import BaseModel
+from typing import List
+from dependency_injector.wiring import inject, Provide
+from src.infrastructure.container import Container
+from src.application.use_cases.create_{{ resource_name | lower }} import Create{{ resource_name }}UseCase
+
+router = APIRouter(prefix="/{{ resource_name | lower }}s", tags=["{{ resource_name }}s"])
+
+class {{ resource_name }}CreateRequest(BaseModel):
+    """
+    Request DTO: Using Pydantic for validation at the boundaries.
+    """
+    {% for attr in attributes %}
+    {{ attr.name }}: {{ attr.type }}
+    {% endfor %}
+
+class {{ resource_name }}ReadResponse(BaseModel):
+    """
+    Response DTO: Using Pydantic to format output.
+    """
+    id: int
+    {% for attr in attributes %}
+    {{ attr.name }}: {{ attr.type }}
+    {% endfor %}
+    created_at: str
+    class Config:
+        from_attributes = True
+
+@router.post("/", response_model={{ resource_name }}ReadResponse, status_code=status.HTTP_201_CREATED)
+@inject
+async def create_{{ resource_name | lower }}(
+    request: {{ resource_name }}CreateRequest,
+    use_case: Create{{ resource_name }}UseCase = Depends(Provide[Container.create_{{ resource_name | lower }}])
+):
+    try:
+        # Pass dict to use case (which creates Domain Entity internally)
+        entity = await use_case.execute(request.model_dump())
+        return entity
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))

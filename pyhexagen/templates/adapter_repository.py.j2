@@ -1,0 +1,44 @@
+from typing import List, Optional
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
+from src.domain.models.{{ resource_name | lower }} import {{ resource_name }}
+from src.application.ports.{{ resource_name | lower }}_repository import {{ resource_name }}Repository
+from src.infrastructure.persistence.models import {{ resource_name }}Table
+from dataclasses import asdict
+
+class SQLAlchemy{{ resource_name }}Repository({{ resource_name }}Repository):
+    """
+    Adapter: Implementation of the persistence Port using SQLAlchemy 2.0.
+    Maps between Domain Entities and Infrastructure Models (Tables).
+    """
+
+    def __init__(self, session: AsyncSession):
+        self.session = session
+
+    async def save(self, entity: {{ resource_name }}) -> {{ resource_name }}:
+        data = asdict(entity)
+        db_obj = {{ resource_name }}Table(**data)
+        self.session.add(db_obj)
+        await self.session.commit()
+        await self.session.refresh(db_obj)
+        # Update entity ID
+        entity.id = db_obj.id
+        return entity
+
+    async def find_by_id(self, id: int) -> Optional[{{ resource_name }}]:
+        result = await self.session.execute(
+            select({{ resource_name }}Table).where({{ resource_name }}Table.id == id)
+        )
+        db_obj = result.scalar_one_or_none()
+        if not db_obj:
+            return None
+        # Map back to Domain Entity
+        return {{ resource_name }}(**{k: v for k, v in db_obj.__dict__.items() if k != '_sa_instance_state'})
+
+    async def list_all(self) -> List[{{ resource_name }}]:
+        result = await self.session.execute(select({{ resource_name }}Table))
+        db_objs = result.scalars().all()
+        return [
+            {{ resource_name }}(**{k: v for k, v in obj.__dict__.items() if k != '_sa_instance_state'})
+            for obj in db_objs
+        ]

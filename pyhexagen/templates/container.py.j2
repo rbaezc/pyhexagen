@@ -1,0 +1,17 @@
+from dependency_injector import containers, providers
+
+class Container(containers.DeclarativeContainer):
+    config = providers.Configuration()
+    
+    # Database and Adapters will be injected here
+    {% if db_type == 'sqlalchemy' %}
+    # db = providers.Singleton(Database, db_url=config.db_url)
+    {% elif db_type == 'motor' %}
+    # db = providers.Singleton(MongoDatabase, db_url=config.db_url)
+    {% endif %}
+    
+    # Repositories
+    # user_repo = providers.Factory(UserRepository, db=db)
+    
+    # Use Cases
+    # create_user = providers.Factory(CreateUserUseCase, repo=user_repo)

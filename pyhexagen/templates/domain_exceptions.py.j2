@@ -1,0 +1,15 @@
+class DomainException(Exception):
+    """Base class for all domain exceptions."""
+    def __init__(self, message: str = "A domain error occurred"):
+        self.message = message
+        super().__init__(self.message)
+
+class EntityNotFoundException(DomainException):
+    """Exception raised when an entity is not found."""
+    def __init__(self, entity_name: str, entity_id: any):
+        super().__init__(f"{entity_name} with id {entity_id} not found")
+
+class EntityAlreadyExistsException(DomainException):
+    """Exception raised when an entity already exists."""
+    def __init__(self, entity_name: str, identifier: any):
+        super().__init__(f"{entity_name} with {identifier} already exists")
