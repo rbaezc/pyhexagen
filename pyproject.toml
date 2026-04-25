@@ -1,10 +1,10 @@
 [project]
 name = "pyhexagen"
-version = "0.1.0"
+version = "0.1.1"
 description = "Hexagonal Architecture Scaffolding for Python/FastAPI"
 requires-python = ">=3.10"
 authors = [
-    { name = "rbaezc", email = "rbaezc@gmail.com" }
+    { name = "rbaezc", email = "raul.baez.camarillo@gmail.com" }
 ]
 urls = { repository = "https://github.com/rbaezc/pyhexagen" }
 dependencies = [
