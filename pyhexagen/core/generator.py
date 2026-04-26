@@ -17,7 +17,7 @@ class HexaGenerator:
             "src/application/ports",
             "src/infrastructure/repositories",
             "src/infrastructure/persistence",
-            "src/web/routers",
+            "src/api/routers",
             "tests"
         ]
         
@@ -29,6 +29,7 @@ class HexaGenerator:
 
         # Initial main files
         self._create_from_template("pyproject.toml.j2", "pyproject.toml", {"project_name": self.project_name})
+        self._create_from_template("requirements.txt.j2", "requirements.txt", {"project_name": self.project_name})
         self._create_from_template("main.py.j2", "main.py", {"project_name": self.project_name})
         self._create_from_template("README.md.j2", "README.md", {"project_name": self.project_name})
         self._create_from_template("Dockerfile.j2", "Dockerfile", {"project_name": self.project_name})

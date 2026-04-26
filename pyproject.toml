@@ -1,6 +1,6 @@
 [project]
 name = "pyhexagen"
-version = "0.1.2"
+version = "0.2.0"
 description = "Hexagonal Architecture Scaffolding for Python/FastAPI"
 requires-python = ">=3.10"
 authors = [
@@ -9,9 +9,10 @@ authors = [
 urls = { repository = "https://github.com/rbaezc/pyhexagen" }
 dependencies = [
     "typer[all]>=0.9.0",
-    "jinja2>=3.1.2",
-    "pydantic>=2.0.0",
-    "inflect>=7.0.0",
+    "jinja2>=3.1.0",
+    "fastapi>=0.100.0",
+    "uvicorn[standard]>=0.22.0",
+    "loguru>=0.7.0"
 ]
 
 [project.scripts]
@@ -20,6 +21,3 @@ pyhexagen = "pyhexagen.cli.main:app"
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
-
-[tool.hatch.build.targets.wheel]
-packages = ["pyhexagen"]
